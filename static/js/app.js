@@ -1,37 +1,32 @@
-/* The following is an example on how you might structure your code.
-This is not the only way to complete this assignment.
-Feel free to disregard and create your own code */
-
 // Define function that will run on page load
 function init() {
-
+    var selector = d3.select("#selDataset");
     // Read json data
     //read the json data
-  let data = fetch("./samples.json")
-    .then(response => {
-       return response.json();
-    })
-    .then(data => console.log(data));
+    d3.json("./samples.json").then((response) => {
+        var dataNames = response.names;
+        dataNames.forEach((data)=>{
+            selector.append("option")
+            .text(data)
+            .property("value", data);
 
-        // Parse and filter data to get sample names
-        let sample_data = JSON.parse(data);
-        let sample_names = sample_data.names;
-        console.log(sample_names);
+        });
 
-        // Add dropdown option for each sample
-        Plotly.newPlot("plot", data);
+        var firstSample = dataNames[0];
 
+        // Call functions below using the first sample to build metadata and initial plots
+   
+        buildMetadata(firstSample);
+        // 
+        buildCharts(firstSample);
 
-    // Call functions below using the first sample to build metadata and initial plots
-function updatePlotly() {
-
-let dropdownMenu = d3.select('#selDataset');
-
-}
+    });
 }
 
 // Define a function that will create metadata for given sample
 function buildMetadata(sample) {
+    var panel = d3.select("#sample-metadata");
+    
 
     // Read the json data
 
@@ -40,7 +35,6 @@ function buildMetadata(sample) {
         // Specify the location of the metadata and update it
 
 }
-
 // Define a function that will create charts for given sample
 function buildCharts(sample) {
 
@@ -58,9 +52,9 @@ function buildCharts(sample) {
 
 function optionChanged(sample){
     // The parameter being passed in this function is new sample id from dropdown menu
-
+    buildMetadata(sample);
     // Update metadata with newly selected sample
-
+    buildCharts(sample);
     // Update charts with newly selected sample
 
 }
