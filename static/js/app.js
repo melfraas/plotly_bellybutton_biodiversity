@@ -25,7 +25,7 @@ function init() {
 
 // Define a function that will create metadata for given sample
 function buildMetadata(sample) {
-    
+
     d3.json("./samples.json").then((response) => {
         var metaData = response.metadata;
         var results = metaData.filter(x => x.id == sample)
@@ -41,23 +41,7 @@ function buildMetadata(sample) {
 
         });
 
-
-
     });
-    // Read the json data
-
-        // Parse and filter the data to get the sample's metadata
-    // var sample = [];
-    // //selection will refer to the 
-    // let selection = selector.property("value");
-    // dataNames.forEach((selection) => {
-
-
-
-
-    
-
-        // Specify the location of the metadata and update it
 
 }
 // Define a function that will create charts for given sample
@@ -69,19 +53,38 @@ function buildCharts(sample) {
         var result = results[0];
         console.log(result);
 
-        var otu_ids = result.otu_ids;
-        var otu_labels = result.otu_labels;
-        var sample_values = result.sample_values;
+        var otuIds = result.otu_ids;
+        var otuLabels = result.otu_labels;
+        var sampleValues = result.sample_values;
 
 
-    // Read the json data
+        //graph top 10 otu ids for y-ticks,
+        var topTen =  sampleValues.sort().slice(0,10).reverse();
+        console.log(topTen)
 
-    // Parse and filter the data to get the sample's OTU data
-    // Pay attention to what data is required for each chart
+        //pull corresponding data from top 10 id's
+        var idPlots = topTen.map(d => "OTU " + d);
+            //create variable for bar data
+        let trace1= {
+            x: topTen,
+            y: idPlots,
+            type: "bar",
+            orientation: "h"
+        }
+        let layout = {
+            title: ""
+        };
 
-    // Create bar chart in correct location
+        let data = [trace1]
 
-    // Create bubble chart in correct location
+        
+
+        Plotly.newPlot("bar", data, layout);
+
+
+
+
+        // Create bubble chart in correct location
     });
 }
 
